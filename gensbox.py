@@ -75,17 +75,31 @@ def affinetran(b):
     r = r ^ 0x63
     return(r)
 
-def invtran(b):
+def gensbox():
+    sbox = []
+    x = 0
+    while x <= 255:
+        sbox.append(affinetran(findgfinv(x)))
+        x += 1
+    return(sbox)
+
+def invsbox(sbox):
+    invsbox = []
+    x = 0
+    while x <= 255:
+        invsbox.append(sbox.index(x))
+        x += 1
+    return(invsbox)
+
+def dispsbox(sbox):
+    dispstr = ''
     i = 0
-    r = 0
-    while i < 8:
-        bit = getbit(b, i)
-        bit = bit ^ getbit(b, i)
-        bit = bit ^ getbit(b, i + 1)
-        bit = bit ^ getbit(b, i + 2)
-        bit = bit ^ getbit(b, i + 3)
-        bit = bit << i
-        r = r | bit
+    for val in sbox:
+        dispstr += hex(val)[2:].rjust(2, '0') + ' '
         i += 1
-    r = r ^ 0x63
-    return(r)
+        if i == 16:
+            dispstr += '\n'
+            i = 0
+    print(dispstr)
+
+dispsbox(invsbox(gensbox()))
