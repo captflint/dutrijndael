@@ -102,4 +102,10 @@ def dispsbox(sbox):
             i = 0
     print(dispstr)
 
-dispsbox(invsbox(gensbox()))
+def exportsboxes():
+    sbox = gensbox()
+    isbox = invsbox(sbox)
+    print('sbox = ' + str(sbox))
+    print('invsbox = ' + str(isbox))
+
+exportsboxes()
