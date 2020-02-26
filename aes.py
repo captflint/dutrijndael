@@ -94,3 +94,50 @@ def multiply(b, c):
         r -= 1
     return(d ^ multiply(b, c))
 
+def subnums(ns, inv=False):
+    r = []
+    if inv:
+        sb = invsbox
+    else:
+        sb = sbox
+    for n in ns:
+        r.append(sb[n])
+    return(r)
+
+def rotatenums(ns, reps):
+    i = len(ns) - 1
+    b = 0
+    c = ns[i]
+    while i >= 0:
+        b = ns[i-1]
+        ns[i-1] = c
+        i -= 1
+        c = b
+    reps -= 1
+    if reps:
+        rotatenums(ns, reps)
+
+def expandkey(key):
+    rconcount = 0
+    expanded = []
+    i = 0
+    while i < len(key):
+        expanded.append(key[i:i+4])
+        i += 4
+    i = 8
+    while i < 58:
+        temp = expanded[i-1]
+        if i % 8 == 0:
+            rotatenums(temp, 1)
+            temp = subnums(temp)
+            temp[0] = temp[0] ^ (2 ** rconcount)
+            rconcount += 1
+        elif i % 8 == 4:
+            temp = subnums(temp)
+        j = 0
+        while j < 4:
+            temp[j] = expanded[i-8][j] ^ temp[j]
+            j += 1
+        expanded.append(temp)
+        i += 1
+    return(expanded)

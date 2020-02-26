@@ -16,4 +16,5 @@ at how much better at coding you are than me.
 
 ## Status
 
-This code does not work.
+This code does not work. I am currently working on key
+expansion and have it *nearly* working correctly.
