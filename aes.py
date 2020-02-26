@@ -125,19 +125,25 @@ def expandkey(key):
         expanded.append(key[i:i+4])
         i += 4
     i = 8
-    while i < 58:
+    while i < 60:
         temp = expanded[i-1]
+        yield(temp)
         if i % 8 == 0:
             rotatenums(temp, 1)
+            yield(temp)
             temp = subnums(temp)
+            yield(temp)
             temp[0] = temp[0] ^ (2 ** rconcount)
+            yield(temp)
             rconcount += 1
         elif i % 8 == 4:
             temp = subnums(temp)
+            yield(temp)
         j = 0
         while j < 4:
             temp[j] = expanded[i-8][j] ^ temp[j]
             j += 1
+        yield(temp)
         expanded.append(temp)
         i += 1
-    return(expanded)
+    #return(expanded)

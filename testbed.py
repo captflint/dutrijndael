@@ -29,5 +29,7 @@ testkey = """
 """
 
 a = hexstring2nums(testkey)
-for word in aes.expandkey(a):
+a = aes.expandkey(a)
+for word in a:
     print(nums2hexstring(word))
+    input()
