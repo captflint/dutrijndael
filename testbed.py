@@ -32,4 +32,3 @@ a = hexstring2nums(testkey)
 a = aes.expandkey(a)
 for word in a:
     print(nums2hexstring(word))
-    input()
