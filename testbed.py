@@ -27,20 +27,12 @@ testmcstate = """
 6353e08c0960e104cd70b751bacad0e7
 """
 
-teststate = []
-
-i = 0
-word = []
-for num in hexstring2nums(testmcstate):
-    word.append(num)
-    i += 1
-    if i == 4:
-        i = 0
-        teststate.append(word)
-        word = []
-
-output = ''
-for word in aes.mixcols(teststate):
-    output += nums2hexstring(word)
-print(output)
+teststate = hexstring2nums(testmcstate)
+teststate = aes.nums2bytes(teststate)
+teststate = aes.inp(teststate)
+teststate = aes.mixcols(teststate)
+teststate = aes.outp(teststate)
+teststate = aes.bytes2nums(teststate)
+teststate = nums2hexstring(teststate)
+print(teststate)
 print("5f72641557f5bc92f7be3b291db9f91a")

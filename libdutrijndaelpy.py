@@ -12,6 +12,30 @@ def bytes2nums(b):
         i += 1
     return(nums)
 
+def inp(data):
+    if type(data) != bytes:
+        raise TypeError
+    if len(data) != 16:
+        raise ValueError
+    data = bytes2nums(data)
+    state = []
+    i = 0
+    while i < 4:
+        word = [data[i], data[i+4], data[i+8], data[i+12]]
+        state.append(word)
+        i += 1
+    return(state)
+
+def outp(state):
+    output = []
+    i = 0
+    while i < 4:
+        for word in state:
+            output.append(word[i])
+        i += 1
+    output = nums2bytes(output)
+    return(output)
+
 sbox = [99, 124, 119, 123, 242, 107, 111, 197, 48, 1, 103,
         43, 254, 215, 171, 118, 202, 130, 201, 125, 250, 89,
         71, 240, 173, 212, 162, 175, 156, 164, 114, 192,
