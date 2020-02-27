@@ -1,4 +1,4 @@
-import aes
+import libdutrijndaelpy as aes
 
 def hexstring2nums(hs):
     valid = ''
