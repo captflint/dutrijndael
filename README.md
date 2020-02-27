@@ -17,4 +17,5 @@ at how much better at coding you are than me.
 ## Status
 
 This code does not work. This is a work in progress. Key
-expansion is implemented and seems to work properly now.
+expansion is implemented and seems to work properly now. Mix
+columns is currently *not* working right.

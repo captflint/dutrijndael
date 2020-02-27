@@ -23,12 +23,24 @@ def nums2hexstring(ns):
         r += hex(n)[2:].rjust(2, '0')
     return(r)
 
-testkey = """
-60 3d eb 10 15 ca 71 be 2b 73 ae f0 85 7d 77 81
-1f 35 2c 07 3b 61 08 d7 2d 98 10 a3 09 14 df f4
+testmcstate = """
+6353e08c0960e104cd70b751bacad0e7
 """
 
-a = hexstring2nums(testkey)
-a = aes.expandkey(a)
-for word in a:
-    print(nums2hexstring(word))
+teststate = []
+
+i = 0
+word = []
+for num in hexstring2nums(testmcstate):
+    word.append(num)
+    i += 1
+    if i == 4:
+        i = 0
+        teststate.append(word)
+        word = []
+
+output = ''
+for word in aes.mixcols(teststate):
+    output += nums2hexstring(word)
+print(output)
+print("5f72641557f5bc92f7be3b291db9f91a")

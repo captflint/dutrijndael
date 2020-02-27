@@ -143,3 +143,44 @@ def expandkey(key):
         expanded.append(temp)
         i += 1
     return(expanded)
+
+def mixcols(state):
+    newstate = [[], [], [], []]
+    c = 0
+    while c < 4:
+        s = multiply(2, state[0][c])
+        s = s ^ multiply(3, state[1][c])
+        s = s ^ state[2][c]
+        s = s ^ state[3][c]
+        c += 1
+        newstate[0].append(s)
+    c = 0
+    while c < 4:
+        s = state[0][c]
+        s = s ^ multiply(2, state[1][c])
+        s = s ^ multiply(3, state[2][c])
+        s = s ^ state[3][c]
+        c += 1
+        newstate[1].append(s)
+    c = 0
+    while c < 4:
+        s = state[0][c]
+        s = s ^ state[1][c]
+        s = s ^ multiply(2, state[2][c])
+        s = s ^ multiply(3, state[3][c])
+        c += 1
+        newstate[2].append(s)
+    c = 0
+    while c < 4:
+        s = multiply(3, state[0][c])
+        s = s ^ state[1][c]
+        s = s ^ state[2][c]
+        s = s ^ multiply(2, state[3][c])
+        c += 1
+        newstate[3].append(s)
+    for word in state:
+        i = 0
+        while i < 4:
+            word[i] = 0
+            i += 1
+    return(newstate)
