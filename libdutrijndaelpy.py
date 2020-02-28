@@ -128,6 +128,12 @@ def subnums(ns, inv=False):
         r.append(sb[n])
     return(r)
 
+def substate(state):
+    r = []
+    for word in state:
+        r.append(subnums(word))
+    return(r)
+
 def rotatenums(ns, reps):
     i = len(ns) - 1
     b = 0
@@ -137,9 +143,14 @@ def rotatenums(ns, reps):
         ns[i-1] = c
         i -= 1
         c = b
-    reps -= 1
     if reps:
-        rotatenums(ns, reps)
+        rotatenums(ns, reps-1)
+
+def shiftrows(state):
+    i = 1
+    while i < 4:
+        rotatenums(state[i], i)
+        i += 1
 
 def expandkey(key):
     rconcount = 0
@@ -208,3 +219,41 @@ def mixcols(state):
             word[i] = 0
             i += 1
     return(newstate)
+
+def addroundkey(state, expkey, roundn):
+    roundkey = expkey[4*roundn:4*roundn+4]
+    i = 0
+    while i < 16:
+        x = i // 4
+        y = i % 4
+        state[y][x] = state[y][x] ^ roundkey[x][y]
+        i += 1
+
+def setup(key, data):
+    state = inp(data)
+    if type(key) != bytes:
+        raise TypeError
+    if len(key) != 32:
+        raise ValueError
+    key = bytes2nums(key)
+    expkey = expandkey(key)
+    i = 0
+    while i < 32:
+        key[i] = 0
+        i += 1
+    return(expkey, state)
+
+def encrypt(key, data):
+    expkey, state = setup(key, data)
+    addroundkey(state, expkey, 0)
+    roundn = 1
+    while roundn < 14:
+        state = substate(state)
+        shiftrows(state)
+        state = mixcols(state)
+        addroundkey(state, expkey, roundn)
+        roundn += 1
+    state = substate(state)
+    shiftrows(state)
+    addroundkey(state, expkey, 14)
+    outp(state)
