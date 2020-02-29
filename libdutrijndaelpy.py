@@ -255,24 +255,15 @@ def setup(key, data):
 
 def encrypt(key, data):
     expkey, state = setup(key, data)
-    debug(state)
     addroundkey(state, expkey, 0)
-    debug(state)
     roundn = 1
     while roundn < 14:
         state = substate(state)
-        debug(state)
         shiftrows(state)
-        debug(state)
         state = mixcols(state)
-        debug(state)
         addroundkey(state, expkey, roundn)
-        debug(state)
         roundn += 1
     state = substate(state)
-    debug(state)
     shiftrows(state)
-    debug(state)
     addroundkey(state, expkey, 14)
-    debug(state)
     return(outp(state))
