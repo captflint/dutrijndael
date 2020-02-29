@@ -256,4 +256,4 @@ def encrypt(key, data):
     state = substate(state)
     shiftrows(state)
     addroundkey(state, expkey, 14)
-    outp(state)
+    return(outp(state))
