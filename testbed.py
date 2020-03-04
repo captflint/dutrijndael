@@ -1,4 +1,5 @@
 import libdutrijndaelpy as aes
+from tests.parsekatdata import encryptkat, decryptkat
 
 def hexstring2nums(hs):
     valid = ''
@@ -23,22 +24,25 @@ def nums2hexstring(ns):
         r += hex(n)[2:].rjust(2, '0')
     return(r)
 
-print("8ea2b7ca516745bfeafc49904b496089")
+def encrypttest(d):
+    testkey = d['KEY']
+    testdata = d['PLAINTEXT']
+    
+    testkey = hexstring2nums(testkey)
+    testkey = aes.nums2bytes(testkey)
 
-testdata = """
-00112233445566778899aabbccddeeff
-"""
+    testdata = hexstring2nums(testdata)
+    testdata = aes.nums2bytes(testdata)
+    testdata = aes.encrypt(testkey, testdata)
+    testdata = aes.bytes2nums(testdata)
+    testdata = nums2hexstring(testdata)
+    print('expected:', d['CIPHERTEXT'])
+    print('got:     ', testdata)
+    if d['CIPHERTEXT'] == testdata:
+        print('PASSED')
+    else:
+        print('FAILED')
+    print()
 
-testkey = """
-000102030405060708090a0b0c0d0e0f101112131415161718191a1b1c1d1e1f
-"""
-
-testkey = hexstring2nums(testkey)
-testkey = aes.nums2bytes(testkey)
-
-testdata = hexstring2nums(testdata)
-testdata = aes.nums2bytes(testdata)
-testdata = aes.encrypt(testkey, testdata)
-testdata = aes.bytes2nums(testdata)
-testdata = nums2hexstring(testdata)
-print(testdata)
+for d in encryptkat:
+    encrypttest(d)
