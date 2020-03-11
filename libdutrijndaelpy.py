@@ -156,9 +156,26 @@ def rotatenums(ns, reps):
     if reps:
         rotatenums(ns, reps-1)
 
-def shiftrows(state):
+def invrotatenums(ns, reps):
+    if reps == 0:
+        return(ns)
+    i = len(ns) - 1
+    b = 0
+    c = ns[i]
+    while i >= 0:
+        b = ns[i-1]
+        ns[i-1] = c
+        i -= 1
+        c = b
+    if reps:
+        rotatenums(ns, reps-1)
+
+def shiftrows(state, inv=False):
     i = 1
     while i < 4:
+        if inv:
+            invrotatenums(state[i], i)
+        else:
         rotatenums(state[i], i)
         i += 1
 
@@ -267,3 +284,4 @@ def encrypt(key, data):
     shiftrows(state)
     addroundkey(state, expkey, 14)
     return(outp(state))
+
